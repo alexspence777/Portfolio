@@ -1,0 +1,110 @@
+---
+title: "Kia/Hyundai Theft Crisis: Protecting Your Ride in an Era of Rising Risks"
+author: "Alex Spence"
+date: "2025-10-07"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if (!requireNamespace("readr", quietly = TRUE)) install.packages("readr")
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+if (!requireNamespace("readxl", quietly = TRUE)) install.packages("readxl")
+if (!requireNamespace("tidyr", quietly = TRUE)) install.packages("tidyr")
+if (!requireNamespace("ggforce", quietly = TRUE)) install.packages("ggforce")
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(readxl)
+library(tidyr)
+library(ggforce)
+
+
+milw <- read_csv("KiaHyundaiMilwaukeeData.csv")
+thefts <- read_csv("kiaHyundaiThefts.csv")
+map <- read_csv("carTheftsMap.csv")
+vice <- read_excel("Motherboard VICE News Kia Hyundai Theft Data.xlsx", skip = 1, col_names = c("Blank", "Denver_Kia", "Denver_All", "Denver_Percent", "El_Paso_Kia", "El_Paso_All", "El_Paso_Percent", 
+                                                                                             "Portland_Kia", "Portland_All", "Portland_Percent", "Atlanta_Kia", "Atlanta_All", "Atlanta_Percent",
+                                                                                             "Chicago_Kia", "Chicago_All", "Chicago_Percent", "Virginia_Beach_Kia", "Virginia_Beach_All", "Virginia_Beach_Percent",
+                                                                                             "Louisville_Kia", "Louisville_All", "Louisville_Percent", "San_Diego_Kia", "San_Diego_All", "San_Diego_Percent",
+                                                                                             "Sacramento_Kia", "Sacramento_All", "Sacramento_Percent", "Dallas_Kia", "Dallas_All", "Dallas_Percent",
+                                                                                             "Fort_Worth_Kia", "Fort_Worth_All", "Fort_Worth_Percent", "Bakersfield_Kia", "Bakersfield_All", "Bakersfield_Percent",
+                                                                                             "Omaha_NE_Kia", "Omaha_NE_All", "Omaha_NE_Percent", "Lubbock_TX_Kia", "Lubbock_TX_All", "Lubbock_TX_Percent",
+                                                                                             "Fremont_CA_Kia", "Fremont_CA_All", "Fremont_CA_Percent", "San_Antonio_Kia", "San_Antonio_All", "San_Antonio_Percent",
+                                                                                             "Irving_Texas_Kia", "Irving_Texas_All", "Irving_Texas_Percent", "Madison_WI_Kia", "Madison_WI_All", "Madison_WI_Percent",
+                                                                                             "Frisco_TX_Kia", "Frisco_TX_All", "Frisco_TX_Percent", "Lincoln_NE_Kia", "Lincoln_NE_All", "Lincoln_NE_Percent",
+                                                                                             "Wichita_KS_Kia", "Wichita_KS_All", "Wichita_KS_Percent", "Plano_TX_Kia", "Plano_TX_All", "Plano_TX_Percent",
+                                                                                             "Akron_OH_Kia", "Akron_OH_All", "Akron_OH_Percent", "Buffalo_NY_Kia", "Buffalo_NY_All", "Buffalo_NY_Percent",
+                                                                                             "Chula_Vista_CA_Kia", "Chula_Vista_CA_All", "Chula_Vista_CA_Percent", "Reno_NV_Kia", "Reno_NV_All", "Reno_NV_Percent",
+                                                                                             "Oxnard_CA_Kia", "Oxnard_CA_All", "Oxnard_CA_Percent", "San_Francisco_Kia", "San_Francisco_All", "San_Francisco_Percent",
+                                                                                             "McKinney_TX_Kia", "McKinney_TX_All", "McKinney_TX_Percent", "Arlington_TX_Kia", "Arlington_TX_All", "Arlington_TX_Percent",
+                                                                                             "Garland_TX_Kia", "Garland_TX_All", "Garland_TX_Percent", "Riverside_County_CA_Kia", "Riverside_County_CA_All", "Riverside_County_CA_Percent",
+                                                                                             "Stockton_CA_Kia", "Stockton_CA_All", "Stockton_CA_Percent", "Corpus_Cristi_TX_Kia", "Corpus_Cristi_TX_All", "Corpus_Cristi_TX_Percent",
+                                                                                             "Cincinatti_Kia", "Cincinatti_All", "Cincinatti_Percent", "Montgomery_County_MD_Kia", "Montgomery_County_MD_All", "Montgomery_County_MD_Percent",
+                                                                                             "Henderson_NV_Kia", "Henderson_NV_All", "Henderson_NV_Percent", "San_Bernardino_CA_Kia", "San_Bernardino_CA_All", "San_Bernardino_CA_Percent",
+                                                                                             "Newport_News_VA_Kia", "Newport_News_VA_All", "Newport_News_VA_Percent", "Amarillo_TX_Kia", "Amarillo_TX_All", "Amarillo_TX_Percent",
+                                                                                             "New_Haven_CT_Kia", "New_Haven_CT_All", "New_Haven_CT_Percent", "Washington_D_C_Kia", "Washington_D_C_All", "Washington_D_C_Percent",
+                                                                                             "Boise_ID_Kia", "Boise_ID_All", "Boise_ID_Percent", "Austin_TX_Kia", "Austin_TX_All", "Austin_TX_Percent",
+                                                                                             "Chandler_AZ_Kia", "Chandler_AZ_All", "Chandler_AZ_Percent", "Modesto_CA_Kia", "Modesto_CA_All", "Modesto_CA_Percent",
+                                                                                             "San_Jose_CA_Kia", "San_Jose_CA_All", "San_Jose_CA_Percent", "Aurora_IL_Kia", "Aurora_IL_All", "Aurora_IL_Percent",
+                                                                                             "Vancouver_WA_Kia", "Vancouver_WA_All", "Vancouver_WA_Percent", "Raleigh_NC_Kia", "Raleigh_NC_All", "Raleigh_NC_Percent",
+                                                                                             "St_Petersburg_FL_Kia", "St_Petersburg_FL_All", "St_Petersburg_FL_Percent", "Milwaukee_WI_Kia", "Milwaukee_WI_All", "Milwaukee_WI_Percent",
+                                                                                             "Los_Angeles_CA_Kia", "Los_Angeles_CA_All", "Los_Angeles_CA_Percent", "Glendale_AZ_Kia", "Glendale_AZ_All", "Glendale_AZ_Percent",
+                                                                                             "Orlando_FL_Kia", "Orlando_FL_All", "Orlando_FL_Percent", "Eugene_OR_Kia", "Eugene_OR_All", "Eugene_OR_Percent",
+                                                                                             "Rochester_NY_Kia", "Rochester_NY_All", "Rochester_NY_Percent", "Durham_NC_Kia", "Durham_NC_All", "Durham_NC_Percent",
+                                                                                             "Norfolk_VA_Kia", "Norfolk_VA_All", "Norfolk_VA_Percent", "Pittsburgh_PA_Kia", "Pittsburgh_PA_All", "Pittsburgh_PA_Percent",
+                                                                                             "Miami_FL_Kia", "Miami_FL_All", "Miami_FL_Percent", "Spokane_WA_Kia", "Spokane_WA_All", "Spokane_WA_Percent",
+                                                                                             "Salt_Lake_City_UT_Kia", "Salt_Lake_City_UT_All", "Salt_Lake_City_UT_Percent", "Minneapolis_MN_Kia", "Minneapolis_MN_All", "Minneapolis_MN_Percent",
+                                                                                             "Anaheim_CA_Kia", "Anaheim_CA_All", "Anaheim_CA_Percent", "Providence_RI_Kia", "Providence_RI_All", "Providence_RI_Percent",
+                                                                                             "Syracuse_NY_Kia", "Syracuse_NY_All", "Syracuse_NY_Percent", "Peoria_AZ_Kia", "Peoria_AZ_All", "Peoria_AZ_Percent",
+                                                                                             "Houston_TX_Kia", "Houston_TX_All", "Houston_TX_Percent", "Prince_Georges_County_MD_Kia", "Prince_Georges_County_MD_All", "Prince_Georges_County_MD_Percent"))
+nat_avg <- thefts %>% 
+  group_by(year, month) %>% 
+  summarise(KH = mean(countKiaHyundaiThefts), Other = mean(countOtherThefts)) %>% 
+  pivot_longer(c(KH, Other), names_to = "Type", values_to = "Count")
+ggplot(nat_avg, aes(x = as.Date(paste(year, month, "01", sep = "-"), format = "%Y-%b-%d"), y = Count, fill = Type)) + 
+  geom_area() + theme_minimal() + labs(title = "National Average Thefts Over Time", y = "Average Count")
+ggsave("visual1.png")
+
+ggplot(milw, aes(x = as.Date(paste(year, month, "01", sep = "-"), format = "%Y-%b-%d"), y = percentKiaHyundai)) + 
+  geom_area(fill = "blue") + theme_minimal() + labs(title = "Kia/Hyundai Theft % in Milwaukee", y = "%")
+ggsave("visual2.png")
+
+pie22 <- thefts %>% filter(year == 2022) %>% group_by(city) %>% summarise(pct = mean(percentKiaHyundai))
+ggplot(pie22, aes(x = "", y = pct, fill = city)) + geom_bar(stat = "identity") + coord_polar("y") + theme_void() + labs(title = "2022 Theft Share by City")
+ggsave("visual3.png")
+
+chg_cat <- map %>% mutate(cat = cut(percentChange2019to2022, breaks = c(-Inf, 0, 0.5, 1, Inf), labels = c("Decrease", "0-50% Increase", "50-100% Increase", ">100% Increase"))) %>% count(cat)
+ggplot(chg_cat, aes(x = 2, y = n, fill = cat)) + geom_bar(stat = "identity") + xlim(0.5, 2.5) + coord_polar("y") + theme_void() + labs(title = "Percent Change Categories 2019-2022")
+ggsave("visual4.png")
+
+# Filter 2022 data and calculate total thefts
+theft_2022 <- thefts %>% 
+  filter(year == 2022) %>%
+  mutate(Total_Thefts = countKiaHyundaiThefts + countOtherThefts) %>%
+  group_by(city) %>%  # Ensure unique cities
+  summarise(Total_Thefts = sum(Total_Thefts, na.rm = TRUE), 
+            countKiaHyundaiThefts = sum(countKiaHyundaiThefts, na.rm = TRUE), 
+            countOtherThefts = sum(countOtherThefts, na.rm = TRUE)) %>%
+  arrange(desc(Total_Thefts)) %>%
+  slice(1:5)
+
+# Debug: Print the selected top 5 cities
+print(theft_2022)
+
+# Reshape for stacking
+theft_long <- theft_2022 %>% 
+  pivot_longer(cols = c(countKiaHyundaiThefts, countOtherThefts), names_to = "Theft_Type", values_to = "Count") %>%
+  mutate(Theft_Type = ifelse(Theft_Type == "countKiaHyundaiThefts", "Kia/Hyundai", "Other"))
+
+# Create stacked bar chart
+ggplot(theft_long, aes(x = city, y = Count, fill = Theft_Type)) + 
+  geom_bar(stat = "identity") + 
+  theme_minimal() + 
+  labs(title = "2022 Theft Breakdown by Top 5 Cities", x = "City", y = "Number of Thefts") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggsave("visual5.png")
+
+avg_pct <- thefts %>% group_by(year, month) %>% summarise(avg_pct = mean(percentKiaHyundai))
+ggplot(avg_pct, aes(x = as.Date(paste(year, month, "01", sep = "-"), format = "%Y-%b-%d"), y = avg_pct)) + geom_line() + theme_minimal() + labs(title = "Average Kia/Hyundai % Across Cities")
+ggsave("visual6.png")
